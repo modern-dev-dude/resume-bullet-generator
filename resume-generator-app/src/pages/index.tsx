@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type NextPage } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "../utils/api";
-import { useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactFragment, useState } from "react";
 
 const Home: NextPage = () => {
   const bullet = api.example.getBullet.useQuery({ text: "Write a resume bullet for node js, react, and typescript " });
@@ -21,7 +23,7 @@ const Home: NextPage = () => {
             <TextField />
         </div>
         <div className="flex items-center justify-center gap-12 px-4 py-16 ">
-          {bullet.data && <ul>{bullet.data.aiResponse.map(choice => <li key={choice.text}>{choice.text}</li>)}</ul>}
+          {bullet.data && <ul>{bullet.data.aiResponse.map((choice: { text: string }) => <li key={choice.text}>{choice.text}</li>)}</ul>}
         </div>
       </main>
     </>

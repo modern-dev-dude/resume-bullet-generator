@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Configuration, OpenAIApi } from "openai";
 import {serverEnv} from '../../../env/schema.mjs';
-import { createTRPCRouter, publicProcedurE } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const exampleRouter = createTRPCRouter({
   getBullet: publicProcedure
