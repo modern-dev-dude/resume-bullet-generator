@@ -28,7 +28,7 @@ function ResumeTextField() {
   };
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       <label
         htmlFor="resumeTextField"
         className="block text-sm font-medium text-gray-700"
@@ -39,7 +39,7 @@ function ResumeTextField() {
         <textarea
           id="resumeTextField"
           rows={6}
-          className="block w-2/5 rounded-md border-gray-300 p-1 shadow-md focus:border-indigo-500 focus:ring-indigo-500  sm:text-sm"
+          className="block w-full rounded-md border-gray-300 p-1 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm md:w-2/5"
           placeholder="developed full stack application with typescript, react, and node js that allows users to generate resume bullets with 1000 active daily users..."
           onChange={handleTextChange}
           value={resumeText}
@@ -100,8 +100,8 @@ function RenderChoicesAsBulletPoints({ choices }: RenderChoicesProps) {
   };
   return (
     <>
-      <div className="mt-6 flow-root">
-        <ul role="list" className="w-2/3 divide-y divide-gray-200">
+      <div className="mt-6 flow-root w-full divide-y divide-gray-200  md:w-2/3">
+        <ul role="list" className="">
           {choices.map(({ text }) => (
             <li key={text} className="py-4 shadow">
               <div className="flex justify-between space-x-4">

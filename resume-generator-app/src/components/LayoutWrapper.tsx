@@ -212,14 +212,16 @@ export default function LayoutWrapper({ children }: LayoutWrapper) {
         </Disclosure>
 
         <header className="bg-white shadow">
-          <div className="mx-auto  w-3/4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto w-3/4 py-6 sm:w-full sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
               {navigation.find((item) => item.href)?.name}
             </h1>
           </div>
         </header>
         <main>
-          <div className="mx-auto  w-3/4 py-6 sm:px-6 lg:px-8">{children}</div>
+          <div className="mx-auto w-3/4 py-6 sm:w-full sm:px-6 lg:px-8">
+            {children}
+          </div>
         </main>
       </div>
     </>
