@@ -16,12 +16,13 @@ export const serverSchema = z.object({
     // Since NextAuth.js automatically uses the VERCEL_URL if present.
     (str) => process.env.VERCEL_URL ?? str,
     // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-    process.env.VERCEL ? z.string() : z.string().url(),
+    process.env.VERCEL ? z.string() : z.string().url()
   ),
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
   OPEN_AI_API_KEY: z.string(),
   OPEN_AI_ORG_ID: z.string(),
+  DOL_API_SHARED_SSECRET: z.string(),
 });
 
 /**
@@ -37,6 +38,7 @@ export const serverEnv = {
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY,
   OPEN_AI_ORG_ID: process.env.OPEN_AI_ORG_ID,
+  DOL_API_SHARED_SSECRET: process.env.DOL_API_SHARED_SSECRET,
 };
 
 /**
