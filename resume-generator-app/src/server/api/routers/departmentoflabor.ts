@@ -1,11 +1,21 @@
-// https://data.dol.gov/get/inspection/format/json
+import { z } from "zod";
+import type { CreateCompletionResponseChoicesInner } from "openai";
+import { Configuration, OpenAIApi } from "openai";
+import { serverEnv } from "../../../env/schema.mjs";
+import { createTRPCRouter, publicProcedure } from "../trpc";
+import { schemaForType } from "../../../types/tRPC_Utils";
 
-// X-API-KEY: {key here}
-//https://data.dol.gov/get/ALIAS/filtername1/filtervalue1/filtername2/filtervalue2
-// /limit/YOUR_NUMBER
-/**
- * /date_column/COLUMN_NAME/start_date/YYYY-MM-DD/end_date/YYYY-MM-DD
- */
-/**
- * /filter_column/first_columnname=value:second_columnname=value:third_columnname=value
- */
+const ZodOpenAICompletionResponse =
+  schemaForType<CreateCompletionResponseChoicesInner>()(
+    z.object({
+      text: z.string().optional(),
+      index: z.number().optional(),
+      finish_reason: z.string().optional(),
+    })
+  );
+
+export const depatmentOfLabor = createTRPCRouter({
+  getBullet: publicProcedure.output(z.array(z.string())).query(() => {
+    return [];
+  }),
+});
