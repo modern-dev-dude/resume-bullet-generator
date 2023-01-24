@@ -2,6 +2,8 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { Fragment } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const user = {
   name: "Sarah byle",
@@ -11,16 +13,17 @@ const user = {
 };
 
 const navigation = [
-  { name: "Resume bullet generator", href: "#resumebuilder", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
+  { name: "Resume bullet generator", pathName: "resumebuilder" },
+  { name: "Dpt of Labor Statistics", pathName: "resumebuilder" },
+  // TODO PLanned pages
+  // { name: "Home", pathName: "" },
+  // { name: "About me", pathName: "aboutme" },
+  // { name: "Blog", pathName: "blog" },
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", pathName: "#" },
+  { name: "Settings", pathName: "#" },
+  { name: "Sign out", pathName: "#" },
 ];
 
 function classNames(...classes: string[]) {
@@ -31,17 +34,23 @@ type LayoutWrapper = {
   children: React.ReactNode;
 };
 
+const useCheckIfNavItemIsActive = (pathNameToCheck: string) => {
+  const router = useRouter();
+  return router.pathname === appendFirstSlashToPathname(pathNameToCheck);
+};
+
+function appendFirstSlashToPathname(pathName: string) {
+  if (pathName[0] !== "/") {
+    return "/" + pathName;
+  }
+  return pathName;
+}
+
 export default function LayoutWrapper({ children }: LayoutWrapper) {
+  const checkRoute = useCheckIfNavItemIsActive;
+
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -56,19 +65,21 @@ export default function LayoutWrapper({ children }: LayoutWrapper) {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <a
+                          <Link
                             key={item.name}
-                            href={item.href}
+                            href={appendFirstSlashToPathname(item.pathName)}
                             className={classNames(
-                              item.current
+                              checkRoute(item.pathName)
                                 ? "bg-gray-900 text-white"
                                 : "text-gray-300 hover:bg-gray-700 hover:text-white",
                               "rounded-md px-3 py-2 text-sm font-medium"
                             )}
-                            aria-current={item.current ? "page" : undefined}
+                            aria-current={
+                              checkRoute(item.pathName) ? "page" : undefined
+                            }
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -110,15 +121,17 @@ export default function LayoutWrapper({ children }: LayoutWrapper) {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <a
-                                    href={item.href}
+                                  <Link
+                                    href={appendFirstSlashToPathname(
+                                      item.pathName
+                                    )}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
                                     {item.name}
-                                  </a>
+                                  </Link>
                                 )}
                               </Menu.Item>
                             ))}
@@ -153,14 +166,16 @@ export default function LayoutWrapper({ children }: LayoutWrapper) {
                     <Disclosure.Button
                       key={item.name}
                       as="a"
-                      href={item.href}
+                      href={appendFirstSlashToPathname(item.pathName)}
                       className={classNames(
-                        item.current
+                        checkRoute(item.pathName)
                           ? "bg-gray-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white",
                         "block rounded-md px-3 py-2 text-base font-medium"
                       )}
-                      aria-current={item.current ? "page" : undefined}
+                      aria-current={
+                        checkRoute(item.pathName) ? "page" : undefined
+                      }
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -198,7 +213,7 @@ export default function LayoutWrapper({ children }: LayoutWrapper) {
                       <Disclosure.Button
                         key={item.name}
                         as="a"
-                        href={item.href}
+                        href={appendFirstSlashToPathname(item.pathName)}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
                         {item.name}
@@ -214,7 +229,7 @@ export default function LayoutWrapper({ children }: LayoutWrapper) {
         <header className="bg-white shadow">
           <div className="mx-auto w-3/4 py-6 sm:w-full sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {navigation.find((item) => item.href)?.name}
+              {navigation.find((item) => checkRoute(item.pathName))?.name}
             </h1>
           </div>
         </header>
