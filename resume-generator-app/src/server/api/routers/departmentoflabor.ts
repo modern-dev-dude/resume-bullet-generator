@@ -1,6 +1,6 @@
 // https://data.dol.gov/get/inspection/format/json
 
-// X-API-KEY: d9c6c290-da4c-424e-a378-fb4bd027b58z
+// X-API-KEY: {key here}
 //https://data.dol.gov/get/ALIAS/filtername1/filtervalue1/filtername2/filtervalue2
 // /limit/YOUR_NUMBER
 /**
