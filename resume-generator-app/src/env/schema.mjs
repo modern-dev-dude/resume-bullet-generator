@@ -22,7 +22,7 @@ export const serverSchema = z.object({
   DISCORD_CLIENT_SECRET: z.string(),
   OPEN_AI_API_KEY: z.string(),
   OPEN_AI_ORG_ID: z.string(),
-  DOL_API_SHARED_SSECRET: z.string(),
+  DOL_API_SHARED_SECRET: z.string(),
 });
 
 /**
@@ -38,7 +38,7 @@ export const serverEnv = {
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY,
   OPEN_AI_ORG_ID: process.env.OPEN_AI_ORG_ID,
-  DOL_API_SHARED_SSECRET: process.env.DOL_API_SHARED_SSECRET,
+  DOL_API_SHARED_SECRET: process.env.DOL_API_SHARED_SECRET,
 };
 
 /**
