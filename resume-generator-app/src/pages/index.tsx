@@ -1,7 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 // import { signIn, signOut, useSession } from "next-auth/react";
-import ResumeBulletGenerator from "../components/ResumeBullet";
 
 const Home: NextPage = () => {
   return (
