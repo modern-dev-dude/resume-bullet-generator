@@ -21,7 +21,6 @@ import {
 const BLSReports: NextPage<typeof getStaticProps> = () => {
   const { data } = api.depatmentOfLabor.getBlsReports.useQuery();
   const [selectedReport, setSelectedReport] = useState("");
-  console.log(data);
   return (
     <>
       <Head>
@@ -129,8 +128,11 @@ export async function getStaticProps() {
     props: {
       trpcState: ssg.dehydrate(),
     },
-    revalidate: 1,
+    revalidate: getOneDayInMs(),
   };
+}
+function getOneDayInMs() {
+  return 1000 * 60 * 60 * 24;
 }
 
 export default BLSReports;
