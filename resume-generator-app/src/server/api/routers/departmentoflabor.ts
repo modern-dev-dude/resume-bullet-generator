@@ -81,6 +81,7 @@ const getPopularReports = async (): Promise<BlsResponse> => {
 
   const currDate = new Date();
   const currYear = currDate.getFullYear();
+
   const seriesReportData = await fetch(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     `${serverEnv.DOL_BASE_URL!}/timeseries/data`,
@@ -94,10 +95,25 @@ const getPopularReports = async (): Promise<BlsResponse> => {
         startyear: currYear - 11,
         endyear: currYear,
         catalog: true,
+        annualaverage: true,
         registrationkey: serverEnv.DOL_API_SHARED_SECRET,
       }),
     }
   );
   const data = (await seriesReportData.json()) as BlsResponse;
-  return data;
+  console.log("adata", JSON.stringify(data.Results.series));
+  const filterAndMapAnnualNumbersOnly = data.Results.series.map((item) => ({
+    seriesID: item.seriesID,
+    catalog: item.catalog,
+    data: item.data.filter((item) => item.periodName === PeriodName.Annual),
+  }));
+
+  return {
+    status: data.status,
+    responseTime: data.responseTime,
+    message: data.message,
+    Results: {
+      series: filterAndMapAnnualNumbersOnly,
+    },
+  };
 };

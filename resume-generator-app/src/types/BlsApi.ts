@@ -2,7 +2,7 @@ type RootResponse<T> = {
   status: string;
   responseTime: number;
   message: string[];
-  Results: Results<BlsReportSeries>;
+  Results: Results<T>;
 };
 
 type BlsPopularSeries = {
@@ -71,13 +71,16 @@ export enum Period {
   M10 = "M10",
   M11 = "M11",
   M12 = "M12",
+  M13 = "M13",
   Q01 = "Q01",
   Q02 = "Q02",
   Q03 = "Q03",
   Q04 = "Q04",
+  Q05 = "Q05",
 }
 
 export enum PeriodName {
+  Annual = "Annual",
   April = "April",
   August = "August",
   December = "December",
