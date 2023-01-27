@@ -13,10 +13,10 @@ const user = {
 };
 
 const navigation = [
+  { name: "Home", pathName: "" },
   { name: "Resume bullet generator", pathName: "resumebuilder" },
   { name: "Dpt of Labor Statistics", pathName: "blsreports" },
   // TODO PLanned pages
-  // { name: "Home", pathName: "" },
   // { name: "About me", pathName: "aboutme" },
   // { name: "Blog", pathName: "blog" },
 ];
