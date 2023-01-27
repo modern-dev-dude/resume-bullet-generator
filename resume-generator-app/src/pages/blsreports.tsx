@@ -16,6 +16,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  Legend,
 } from "recharts";
 
 const BLSReports: NextPage<typeof getStaticProps> = () => {
@@ -36,7 +37,14 @@ const BLSReports: NextPage<typeof getStaticProps> = () => {
           <div className="h-1/3 w-full md:w-2/5 ">
             <Listbox value={selectedReport} onChange={setSelectedReport}>
               <div className="relative mt-1">
-                <h4 className="text-lg font-medium">Select report:</h4>
+                <div className="flex flex-col ">
+                  <h4 className="text-lg font-medium">Select report :</h4>
+                  {selectedReport.length === 0 && (
+                    <span className="text-sm italic">
+                      (use the dropdown to show a chart)
+                    </span>
+                  )}
+                </div>
                 <Listbox.Button className="relative h-12 w-full cursor-default rounded-lg bg-white px-4 text-left shadow-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                   <span className="block truncate">{selectedReport}</span>
                   <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -91,23 +99,54 @@ const BLSReports: NextPage<typeof getStaticProps> = () => {
               </div>
             </Listbox>
           </div>
-          <div className="mt-4 h-1/3 w-full md:w-2/5">
-            <ResponsiveContainer>
-              <AreaChart
-                data={data?.Results.series
-                  .find(
-                    (report) => report.catalog.series_title === selectedReport
-                  )
-                  ?.data?.sort((a, b) => Number(a.year) - Number(b.year))}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="periodName" />
-                <YAxis />
-                <Area dataKey="value" stroke="#8884d8" fill="#8884d8" />
-                <Tooltip />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+
+          {selectedReport.length > 0 && (
+            <div
+              className="mt-4 w-full md:w-3/5"
+              style={{
+                width: "80vw",
+                height: "60vh",
+              }}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={data?.Results.series
+                    .find(
+                      (report) => report.catalog.series_title === selectedReport
+                    )
+                    ?.data?.sort((a, b) => Number(a.year) - Number(b.year))}
+                  margin={{
+                    top: 24,
+                    right: 30,
+                    left: -20,
+                    bottom: 0,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="year" />
+                  <YAxis />
+                  <Area dataKey="value" stroke="#155e75" fill="#67e8f9" />
+                  <Tooltip />
+                  <Legend
+                    verticalAlign="top"
+                    height={55}
+                    formatter={() => {
+                      const item = data?.Results.series.find(
+                        (report) =>
+                          report.catalog.series_title === selectedReport
+                      );
+                      return (
+                        <span>
+                          {item?.catalog.series_title},
+                          {item?.catalog.demographic_age}
+                        </span>
+                      );
+                    }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </div>
       </main>
     </>
@@ -128,11 +167,8 @@ export async function getStaticProps() {
     props: {
       trpcState: ssg.dehydrate(),
     },
-    revalidate: getOneDayInMs(),
+    revalidate: 60 * 60 * 24,
   };
-}
-function getOneDayInMs() {
-  return 1000 * 60 * 60 * 24;
 }
 
 export default BLSReports;

@@ -101,19 +101,25 @@ const getPopularReports = async (): Promise<BlsResponse> => {
     }
   );
   const data = (await seriesReportData.json()) as BlsResponse;
-  console.log("adata", JSON.stringify(data.Results.series));
-  const filterAndMapAnnualNumbersOnly = data.Results.series.map((item) => ({
-    seriesID: item.seriesID,
-    catalog: item.catalog,
-    data: item.data.filter((item) => item.periodName === PeriodName.Annual),
-  }));
+  // const filterAndMapAnnualNumbersOnly = data.Results.series.filter((w) => w.periodName === PeriodName.Annual)
+  const filterAndMapAnnualNumbersOnly = data.Results.series.map(
+    (blsSeriesItem) => ({
+      seriesID: blsSeriesItem.seriesID,
+      catalog: blsSeriesItem.catalog,
+      data: blsSeriesItem.data.filter((w) => {
+        return w.periodName == PeriodName.Annual;
+      }),
+    })
+  );
 
   return {
     status: data.status,
     responseTime: data.responseTime,
     message: data.message,
     Results: {
-      series: filterAndMapAnnualNumbersOnly,
+      series: filterAndMapAnnualNumbersOnly.filter(
+        (item) => item.data.length > 0
+      ),
     },
   };
 };
