@@ -23,9 +23,6 @@ export const openai = createTRPCRouter({
         const responseFromOpenAi = await getResponse(input.text);
         return responseFromOpenAi;
       } catch (err) {
-        console.log(err?.response?.data);
-        console.log(err?.message);
-
         throw new Error("Error");
       }
     }),
