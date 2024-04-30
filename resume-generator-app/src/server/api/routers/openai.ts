@@ -19,8 +19,15 @@ export const openai = createTRPCRouter({
     .input(z.object({ text: z.string() }))
     .output(z.array(ZodOpenAICompletionResponse))
     .mutation(async ({ input }) => {
-      const responseFromOpenAi = await getResponse(input.text);
-      return responseFromOpenAi;
+      try {
+        const responseFromOpenAi = await getResponse(input.text);
+        return responseFromOpenAi;
+      } catch (err) {
+        console.log(err?.response?.data);
+        console.log(err?.message);
+
+        throw new Error("Error");
+      }
     }),
 });
 
@@ -30,10 +37,11 @@ export const getResponse = async (question: string) => {
     apiKey: serverEnv.OPEN_AI_API_KEY,
     organization: serverEnv.OPEN_AI_ORG_ID,
   });
-
   const openai = new OpenAIApi(configuration);
+  // console.log("openai.listModels", await openai.listModels());
+
   const resposne = await openai.createCompletion({
-    model: "text-davinci-003",
+    model: "gpt-3.5-turbo-instruct",
     prompt: `Create a resume bullet for ${question}`,
     n: 3,
     max_tokens: 100,
